@@ -3,10 +3,18 @@ package database
 import (
 	"fmt"
 	"log"
+
+	"./query_struct"
 )
 
+
 func (conf *Config) checkDB() bool{
-	statement := fmt.Sprintf("SELECT EXISTS(SELECT datname FROM pg_catalog.pg_database WHERE datname = '%s');",
+	statement := fmt.Sprintf("%s %s(%s datname %s pg_catalog.pg_database %s datname = '%s');",
+		query_struct.SELECT,
+		query_struct.EXISTS,
+		query_struct.SELECT,
+		query_struct.FROM,
+		query_struct.WHERE,
 		conf.database)
 	row := conf.conn.QueryRow(statement)
 
@@ -29,7 +37,7 @@ func (conf *Config) create() {
 	 */
 	exists := conf.checkDB()
 	if exists == false {
-		row := fmt.Sprintf("CREATE DATABASE %s;", conf.database)
+		row := fmt.Sprintf("%s %s;", query_struct.CREATE_DB, conf.database)
 		_, err := conf.conn.Exec(row)
 		if err != nil {
 			log.Fatal(err)

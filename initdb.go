@@ -3,14 +3,13 @@ package database
 import "C"
 import (
 	"database/sql"
-	"os"
 
 	_ "github.com/lib/pq"
 )
 
 type Config struct {
 	host string
-	port string
+	port int
 	database string
 	user string
 	password string
@@ -18,14 +17,13 @@ type Config struct {
 }
 
 
-func InitDatabase() {
-	goEnv("./database/initdb.env")
+func InitDatabase(host string, port int, database string, username string, password string) {
 	config := Config{
-		host:     os.Getenv("host"),
-		port:     os.Getenv("port"),
-		database: os.Getenv("database"),
-		user:     os.Getenv("username"),
-		password: os.Getenv("password"),
+		host:     host,
+		port:     port,
+		database: database,
+		user:     username,
+		password: password,
 	}
 	config.openSQL()
 	config.create()

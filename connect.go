@@ -12,7 +12,7 @@ func (conf *Config) connInfo() string {
 	 * MYSQL
 	 * return fmt.Sprintf("%s:%s@tcp(%s:%s)/", conf.user, conf.password, conf.host, conf.port)
 	 */
-	return fmt.Sprintf("user=%s host=%s port=%s sslmode=disable",
+	return fmt.Sprintf("user=%s host=%s port=%d sslmode=disable",
 		conf.user, conf.host, conf.port)
 }
 
