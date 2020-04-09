@@ -8,13 +8,24 @@ pre-install postgreSQL
 InitDatabase(host string, port int, database string, username string, password string)
 ```
 
+
+### Create database
 ```bash
-2020/04/09 15:30:27 Connection host: localhost:5432
-2020/04/09 15:30:27 create database testdbgo successfully
+create database testdbgo successfully
 ```
-##### if db exists
+##### if database exists
 ```bash
-2020/04/09 15:31:29 Connection host: localhost:5432
-2020/04/09 15:31:29 database testdbgo is exists
+database testdbgo is exists
+exit status 1
+```
+
+
+### Create user
+```bash
+create user: test
+```
+##### if user exists
+```bash
+pq: role "test" already exists
 exit status 1
 ```
