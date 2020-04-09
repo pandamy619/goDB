@@ -3,7 +3,6 @@ package database
 import "C"
 import (
 	"database/sql"
-
 	_ "github.com/lib/pq"
 )
 
@@ -26,5 +25,6 @@ func InitDatabase(host string, port int, database string, username string, passw
 		password: password,
 	}
 	config.openSQL()
-	config.create()
+	// config.CreateDB()
+	config.CreateUser("test", "test")
 }

@@ -10,3 +10,5 @@ package query_struct
  */
 const EXISTS = "EXISTS"
 
+const WITH = "WITH"
+

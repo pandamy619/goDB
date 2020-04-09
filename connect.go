@@ -12,8 +12,9 @@ func (conf *Config) connInfo() string {
 	 * MYSQL
 	 * return fmt.Sprintf("%s:%s@tcp(%s:%s)/", conf.user, conf.password, conf.host, conf.port)
 	 */
-	return fmt.Sprintf("user=%s host=%s port=%d sslmode=disable",
-		conf.user, conf.host, conf.port)
+
+	return fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable",
+		conf.port, conf.host, conf.user, conf.password, conf.database)
 }
 
 func (conf *Config) openSQL() {
@@ -22,7 +23,7 @@ func (conf *Config) openSQL() {
 	if err != nil {
 		log.Fatalln(err)
 	} else {
-		log.Printf("Connection host: %s", conf.host)
+		log.Printf("Connection host: %s:%d", conf.host, conf.port)
 	}
 	conf.conn = db
 }

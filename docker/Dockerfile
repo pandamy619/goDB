@@ -24,10 +24,10 @@ USER postgres
 # Note: here we use ``&&\`` to run commands one after the other - the ``\``
 #       allows the RUN command to span multiple lines.
 RUN    /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
+    psql --command "CREATE USER database_user WITH SUPERUSER PASSWORD 'database_password';" &&\
     psql --command "CREATE DATABASE database;" &&\
-    psql --command "GRANT ALL ON DATABASE database TO docker" &&\
-    createdb -O docker docker
+    psql --command "GRANT ALL ON DATABASE database TO database_user;" &&\
+    createdb -O database_user database_user
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
@@ -45,3 +45,6 @@ VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 # Set the default command to run when starting the container
 CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 
+# Example run
+# docker build -t eg_postgresql .
+# docker run --rm -P --name pg_test eg_postgresql
