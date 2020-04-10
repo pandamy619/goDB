@@ -3,29 +3,23 @@ This app for work to databases
 
 pre-install postgreSQL
 
-#### The example
-```
-InitDatabase(host string, port int, database string, username string, password string)
+#### init struct
+```bash
+databse.Database{Host string, Port string, User string, Password string, conn *sql.DB}
 ```
 
+#### open SQL connect
 
-### Create database
-```bash
-create database testdbgo successfully
-```
-##### if database exists
-```bash
-database testdbgo is exists
-exit status 1
+```go
+func (db *Database) InitDatabase(host string, port int, username string, password string)
 ```
 
-
-### Create user
-```bash
-create user: test
+#### Create database
+```go
+func (db *Database) CreateDB(dbname string)
 ```
-##### if user exists
-```bash
-pq: role "test" already exists
-exit status 1
+
+#### Create user
+```go
+func (db *Database) CreateUser(username string, password string)
 ```

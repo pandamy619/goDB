@@ -9,7 +9,7 @@ import (
 
 
 func (db *Database) check(statement string) bool {
-	row := db.Conn.QueryRow(statement)
+	row := db.conn.QueryRow(statement)
 	var exists bool
 	err := row.Scan(&exists)
 	if err != nil {
@@ -31,7 +31,7 @@ func (db *Database) checkDB(dbname string) bool{
 
 
 func (db *Database) create(row string) (bool, error){
-	_, err := db.Conn.Exec(row)
+	_, err := db.conn.Exec(row)
 	if err != nil {
 		log.Fatalln(err)
 		return false, err

@@ -11,7 +11,7 @@ type Database struct {
 	Port     int
 	User     string
 	Password string
-	Conn     *sql.DB
+	conn     *sql.DB
 }
 
 func (db * Database)InitDatabase() {

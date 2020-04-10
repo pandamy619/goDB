@@ -12,8 +12,8 @@ func (db *Database) connInfo() string {
 	 * MYSQL
 	 * return fmt.Sprintf("%s:%s@tcp(%s:%s)/", conf.user, conf.password, conf.host, conf.port)
 	 */
-	return fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable",
-		db.Port, db.Host, db.User, db.Password, db.Database)
+	return fmt.Sprintf("port=%d host=%s user=%s password=%s sslmode=disable",
+		db.Port, db.Host, db.User, db.Password, )
 }
 
 func (db *Database) openSQL() {
@@ -24,5 +24,5 @@ func (db *Database) openSQL() {
 	} else {
 		log.Printf("Connection host: %s:%d", db.Host, db.Port)
 	}
-	db.Conn = dbConn
+	db.conn = dbConn
 }
