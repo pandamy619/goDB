@@ -8,8 +8,8 @@ import (
 )
 
 
-func (conf *Config) check(statement string) bool {
-	row := conf.conn.QueryRow(statement)
+func (db *Database) check(statement string) bool {
+	row := db.Conn.QueryRow(statement)
 	var exists bool
 	err := row.Scan(&exists)
 	if err != nil {
@@ -18,20 +18,20 @@ func (conf *Config) check(statement string) bool {
 	return exists
 }
 
-func (conf *Config) checkDB() bool{
+func (db *Database) checkDB(dbname string) bool{
 	statement := fmt.Sprintf("%s %s(%s datname %s pg_catalog.pg_database %s datname = '%s');",
 		query_struct.SELECT,
 		query_struct.EXISTS,
 		query_struct.SELECT,
 		query_struct.FROM,
 		query_struct.WHERE,
-		conf.database)
-	return conf.check(statement)
+		dbname)
+	return db.check(statement)
 }
 
 
-func (conf *Config) create(row string) (bool, error){
-	_, err := conf.conn.Exec(row)
+func (db *Database) create(row string) (bool, error){
+	_, err := db.Conn.Exec(row)
 	if err != nil {
 		log.Fatalln(err)
 		return false, err
@@ -40,7 +40,7 @@ func (conf *Config) create(row string) (bool, error){
 }
 
 
-func (conf *Config) CreateDB() {
+func (db *Database) CreateDB(dbname string) {
 	/*
 	 * You can ask the system catalog pg_database - accessible from any database in the same database cluster.
 	 * The tricky part is that CREATE DATABASE can only be executed as a single statement
@@ -49,29 +49,29 @@ func (conf *Config) CreateDB() {
 	 * SELECT 'CREATE DATABASE mydb'
 	 * WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'mydb')
 	 */
-	exists := conf.checkDB()
+	exists := db.checkDB(dbname)
 	if exists == false {
-		row := fmt.Sprintf("%s %s;", query_struct.CREATE_DB, conf.database)
-		rsl, err := conf.create(row)
+		row := fmt.Sprintf("%s %s;", query_struct.CREATE_DB, dbname)
+		rsl, err := db.create(row)
 		if rsl == true {
-			log.Printf("create database %s successfully\n", conf.database)
+			log.Printf("create database %s successfully\n", dbname)
 		} else {
 			log.Fatal(err)
 		}
 	} else {
-		log.Fatalf("database %s is exists\n", conf.database)
+		log.Fatalf("database %s is exists\n", dbname)
 	}
 }
 
 
-func (conf *Config) CreateUser(username string, password string) {
+func (db *Database) CreateUser(username string, password string) {
 	row := fmt.Sprintf("%s %s %s %s '%s';",
 		query_struct.CREATE_USER,
 		username,
 		query_struct.WITH,
 		query_struct.PASSWORD,
 		password)
-	rsl, err := conf.create(row)
+	rsl, err := db.create(row)
 	if rsl == true {
 		log.Printf("create user: %s\n", username)
 	} else {
