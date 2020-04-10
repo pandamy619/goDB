@@ -4,7 +4,7 @@ This app for work to databases
 pre-install postgreSQL
 
 #### init struct
-```bash
+```go
 databse.Database{Host string, Port string, User string, Password string, conn *sql.DB}
 ```
 
