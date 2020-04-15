@@ -12,17 +12,17 @@ func (db *Database) connInfo() string {
 	 * MYSQL
 	 * return fmt.Sprintf("%s:%s@tcp(%s:%s)/", conf.user, conf.password, conf.host, conf.port)
 	 */
-	return fmt.Sprintf("port=%d host=%s user=%s password=%s sslmode=disable",
-		db.Port, db.Host, db.User, db.Password, )
+	return fmt.Sprintf("port=%d host=%s user=%s sslmode=disable",
+		db.Port, db.Host, db.User)
 }
 
-func (db *Database) openSQL() {
+func (db *Database) openSQL(logger *log.Logger) {
 	sqlString := db.connInfo()
 	dbConn, err := sql.Open("postgres", sqlString)
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatal(err)
 	} else {
-		log.Printf("Connection host: %s:%d", db.Host, db.Port)
+		logger.Printf("Connection host: %s:%d", db.Host, db.Port)
 	}
 	db.conn = dbConn
 }

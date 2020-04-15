@@ -4,6 +4,8 @@ import "C"
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+
+	"./logging"
 )
 
 type Database struct {
@@ -14,6 +16,11 @@ type Database struct {
 	conn     *sql.DB
 }
 
+const PathLog = "./log/database/"
+const FormatLogFile = "20060102_15_04"
+
 func (db * Database)InitDatabase() {
-	db.openSQL()
+	logger, file := logging.NewLog(PathLog, FormatLogFile, "connect:")
+	db.openSQL(logger)
+	logging.CloseLog(file)
 }

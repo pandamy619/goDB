@@ -5,7 +5,7 @@ pre-install postgreSQL
 
 #### init struct
 ```go
-databse.Database{Host string, Port string, User string, Password string, conn *sql.DB}
+database.Database{Host string, Port string, User string, Password string, conn *sql.DB}
 ```
 
 #### open SQL connect

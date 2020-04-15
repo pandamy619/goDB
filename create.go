@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"./logging"
 	"./query_struct"
 )
 
@@ -30,17 +31,17 @@ func (db *Database) checkDB(dbname string) bool{
 }
 
 
-func (db *Database) create(row string) (bool, error){
+func (db *Database) create(row string, logger *log.Logger) (bool, error){
 	_, err := db.conn.Exec(row)
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatalln(err)
 		return false, err
 	}
 	return true, nil
 }
 
 
-func (db *Database) CreateDB(dbname string) {
+func (db *Database) createDB(dbname string, logger *log.Logger) {
 	/*
 	 * You can ask the system catalog pg_database - accessible from any database in the same database cluster.
 	 * The tricky part is that CREATE DATABASE can only be executed as a single statement
@@ -52,29 +53,42 @@ func (db *Database) CreateDB(dbname string) {
 	exists := db.checkDB(dbname)
 	if exists == false {
 		row := fmt.Sprintf("%s %s;", query_struct.CREATE_DB, dbname)
-		rsl, err := db.create(row)
+		rsl, err := db.create(row, logger)
 		if rsl == true {
-			log.Printf("create database %s successfully\n", dbname)
+			logger.Printf("create database %s successfully\n", dbname)
 		} else {
-			log.Fatal(err)
+			logger.Fatal(err)
 		}
 	} else {
-		log.Fatalf("database %s is exists\n", dbname)
+		logger.Fatalf("database %s is exists\n", dbname)
 	}
 }
 
 
-func (db *Database) CreateUser(username string, password string) {
+func (db *Database) createuser(username string, password string, logger *log.Logger) {
 	row := fmt.Sprintf("%s %s %s %s '%s';",
 		query_struct.CREATE_USER,
 		username,
 		query_struct.WITH,
 		query_struct.PASSWORD,
 		password)
-	rsl, err := db.create(row)
+	rsl, err := db.create(row, logger)
 	if rsl == true {
-		log.Printf("create user: %s\n", username)
+		logger.Printf("create user: %s\n", username)
 	} else {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 }
+
+func (db *Database) CreateDatabase(dbname string) {
+	logger, file := logging.NewLog(PathLog, FormatLogFile,"create database:")
+	db.createDB(dbname, logger)
+	logging.CloseLog(file)
+}
+
+func (db *Database) CreateUser(username string, password string) {
+	logger, file := logging.NewLog(PathLog, FormatLogFile,"create user:")
+	db.createuser(username, password, logger)
+	logging.CloseLog(file)
+}
+
