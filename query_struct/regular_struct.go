@@ -51,3 +51,5 @@ const HAVING = "HAVING"
  * ORDER BY City
  */
 const ORDER_BY = "ORDER BY"
+
+const DROP = "DROP"

@@ -16,6 +16,8 @@ type Database struct {
 	conn     *sql.DB
 }
 
+
+// перенести в переменные
 const PathLog = "./log/database/"
 const FormatLogFile = "20060102_15_04"
 
