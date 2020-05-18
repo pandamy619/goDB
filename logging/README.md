@@ -15,10 +15,13 @@ required aguments
 optional arguments
 * `prefix` - prefix for the standard logger (default to "prefix")
 
+
+##### New creates a new Logger
 ```go
-logger, file := logging.NewLog(PathLog, FormatLogFile, "prefix")
+NewLog(path string, formatLogFile string, prefix string) (*log.Logger, *os.File)
+```
 
-<some code>
-
-logging.CloseLog(file)
+##### Close log file
+```go
+CloseLog(file *os.File)
 ```
