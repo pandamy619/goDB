@@ -1,9 +1,19 @@
 # goDB
-This app for work to databases
 
-pre-install postgreSQL
+This app for work to databases (PostgreSQL)
 
-#### init struct
+#### Supported database:
+* PostgreSQL
+
+
+## Installation
+```bash
+go get https://github.com/golang/go
+```
+
+## Usage
+
+### Init struct
 ```go
 database.Database{Host string, Port string, User string, Password string, conn *sql.DB}
 ```
